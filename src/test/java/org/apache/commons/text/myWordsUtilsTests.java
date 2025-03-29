@@ -34,5 +34,17 @@ public class myWordsUtilsTests {
         }
     }
 
+    @Test
+    public void delimiterCapitalizeTest(){
+        assertEquals("!the @quick #brown $fox %jumps ^over &the *lazy (dog", WordUtils.capitalize(delimitedSentence, null));
+        for (int x = 0; x < delimiters.length()-1; x++) {
+            assertEquals(expectedDelimitedSentences[x], WordUtils.capitalize(delimitedSentence, delimiters.charAt(x)));
+        }
+        for (int x = 0; x < vowels.length()-1; x++) {
+            assertEquals(expectedVoweledSentences[x], WordUtils.capitalize(delimitedSentence, vowels.charAt(x)));
+        }
+
+    }
+
 
 }
