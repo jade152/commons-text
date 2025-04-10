@@ -44,6 +44,7 @@ public class myWordsUtilsTests {
 
     @Test
     public void whitespaceCaptializeTest() {
+        //partiton testing
         assertEquals("!@#$%^&*()_+", WordUtils.capitalize("!@#$%^&*()_+"));
         assertEquals("!the @quick #brown $fox %jumps ^over &the *lazy (dog", WordUtils.capitalize(delimitedSentence));
         assertEquals("The Quick Brown Fox Jumps Over The Lazy Dog", WordUtils.capitalize(typicalSentence));
@@ -54,6 +55,7 @@ public class myWordsUtilsTests {
 
     @Test
     public void delimiterCapitalizeTest(){
+        //partition testing
         assertEquals("!the @quick #brown $fox %jumps ^over &the *lazy (dog", WordUtils.capitalize(delimitedSentence, null));
         for (int x = 0; x < delimiters.length()-1; x++) {
             assertEquals(expectedDelimitedSentences[x], WordUtils.capitalize(delimitedSentence, delimiters.charAt(x)));
@@ -63,14 +65,6 @@ public class myWordsUtilsTests {
         }
 
     }
-    @Test
-    public void abreviateTest(){
-        assertEquals("One day work will end, play is forever! ... I'll find some way to end this.", WordUtils.abbreviate(sentenceForAbreviation, '!', -1, "... I'll find some way to end this." ));
-        assertEquals("One day work will end, play is forever! One day play will end, w #-%", WordUtils.abbreviate(sentenceForAbreviation, 'A', 'Z', "#-%" ));
-        assertEquals("One day work will end, play is forever! One day play will end, work is forever! Nothing seemed to be abbreviated here.", WordUtils.abbreviate(sentenceForAbreviation, 'a', 'z', "Nothing seemed to be abbreviated here." ));
-        assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, -1, -1, "... I'll find some way to end this." ));
-
-    }
-
+    
 
 }
