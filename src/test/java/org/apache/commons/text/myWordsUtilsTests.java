@@ -84,92 +84,129 @@ public class myWordsUtilsTests {
         }
     }
 
+    //robust worst case boundary testing
+
+    // lower: min to min+1, upper: min-1
     @Test
-    public void abreviateTest(){
-        //robust worst case boundary testing
-        // lower: min to min+1, upper: min-1
+    public void abbreviateTestLowestExtremeBounds(){
+
         assertEquals("One... I'll find some way to end this.", WordUtils.abbreviate(sentenceForAbreviation, -1, -1, "... I'll find some way to end this." ));
         assertEquals("One...You will relive every key mistake you've ever made in your life.", WordUtils.abbreviate(sentenceForAbreviation, 0, -1, "...You will relive every key mistake you've ever made in your life."));
         assertEquals("One...We are indeed close.", WordUtils.abbreviate(sentenceForAbreviation, 1, -1, "...We are indeed close."));
+    }
 
-        // lower: min-1 to min+1, upper: min
+    // lower: min-1 to min+1, upper: min
+    @Test
+    public void abbrevateTestLowestBounds(){
         assertEquals("...Where did the sentence go?", WordUtils.abbreviate(sentenceForAbreviation, -1, 0, "...Where did the sentence go?" ));
         assertEquals("...There's nothing there.", WordUtils.abbreviate(sentenceForAbreviation, 0, 0, "...There's nothing there."));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, 1, 0, "...Oops, that's an exception."));
+    }
 
-        // lower: min-1 to min+1, upper: min+1
+    // lower: min-1 to min+1, upper: min+1
+    @Test
+    public void abbrevateTest2ndLowestBounds(){
         assertEquals("O...Oh!", WordUtils.abbreviate(sentenceForAbreviation, -1, 1, "...Oh!" ));
         assertEquals("O, Oh...", WordUtils.abbreviate(sentenceForAbreviation, 0, 1, ", Oh..."));
         assertEquals("O...what about U?", WordUtils.abbreviate(sentenceForAbreviation, 1, 1, "...what about U?"));
+    }
 
-        // lower: min-1 to min+1, upper: typical
+    // lower: min-1 to min+1, upper: typical
+    @Test
+    public void abbrevateTestTypicalLowestBounds(){
         assertEquals("One...huh?", WordUtils.abbreviate(sentenceForAbreviation, -1, 20, "...huh?" ));
         assertEquals("One...what?", WordUtils.abbreviate(sentenceForAbreviation, 0, 'Z', "...what?"));
         assertEquals("One...why?", WordUtils.abbreviate(sentenceForAbreviation, 1, 'z', "...why?"));
+    }
 
-        // lower: min-1 to min+1, upper: max-1
+    // lower: min-1 to min+1, upper: max-1
+    @Test
+    public void abbrevateTestLowestWith2ndHighest(){
         assertEquals("One", WordUtils.abbreviate(sentenceForAbreviation, -1, Integer.MAX_VALUE-1, "" ));
         assertEquals("One", WordUtils.abbreviate(sentenceForAbreviation, 0, Integer.MAX_VALUE-1, ""));
         assertEquals("One", WordUtils.abbreviate(sentenceForAbreviation, 1, Integer.MAX_VALUE-1, ""));
+    }
 
-        // lower: min-1 to min+1, upper: max
+    // lower: min-1 to min+1, upper: max
+    @Test
+    public void abbrevateTestLowestWithHighest(){
         assertEquals("One", WordUtils.abbreviate(sentenceForAbreviation, -1, Integer.MAX_VALUE, "" ));
         assertEquals("One", WordUtils.abbreviate(sentenceForAbreviation, 0, Integer.MAX_VALUE, ""));
         assertEquals("One", WordUtils.abbreviate(sentenceForAbreviation, 1, Integer.MAX_VALUE, ""));
+    }
 
-        // lower: min-1 to min+1, upper: max+1
-        assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, -1, Integer.MAX_VALUE+1, "" ));
-        assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, 0, Integer.MAX_VALUE+1, ""));
-        assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, 1, Integer.MAX_VALUE+1, ""));
-
-        // lower: typical, upper: min-1 to min+1
+    // lower: typical, upper: min-1 to min+1
+    @Test
+    public void abbrevateTestTypicalWithLowest(){
         assertEquals("One day work will end, play is forever!... I'll find some way to end this.", WordUtils.abbreviate(sentenceForAbreviation, '!', -1, "... I'll find some way to end this." ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, 'A', 0, "#-%" ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, 'a', 1, "Nothing seemed to be abbreviated here." ));
+    }
 
-        // lower: typical, upper: typical
-        assertEquals("One day work will end, play is forever! One day play will end, work#-%", WordUtils.abbreviate(sentenceForAbreviation, 'A', 'Z', "#-%" ));
+    // lower: typical, upper: typical
+    @Test
+    public void abbrevateTestTypical(){ assertEquals("One day work will end, play is forever! One day play will end, work#-%", WordUtils.abbreviate(sentenceForAbreviation, 'A', 'Z', "#-%" )); }
 
-        // lower: typical, upper: max-1 to max+1
+    // lower: typical, upper: max-1 to max+1
+    @Test
+    public void abbrevateTestTypicalwithHighest(){
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!", WordUtils.abbreviate(sentenceForAbreviation, 'a', Integer.MAX_VALUE-1, " Nothing seemed to be abbreviated here." ));
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!", WordUtils.abbreviate(sentenceForAbreviation, 'a', Integer.MAX_VALUE, " Nothing seemed to be abbreviated here." ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, 'a', Integer.MAX_VALUE+1, "Nothing seemed to be abbreviated here." ));
+    }
 
-        // lower: max-1 to max+1, upper: min-1
+    // lower: max-1 to max+1, upper: min-1
+    @Test
+    public void abbrevateTestMaximumWithLowestExtreme(){
+
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE-1, -1, "" ));
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, -1, ""));
         assertEquals("One...We are indeed close.", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, -1, "...We are indeed close."));
+    }
 
-        // lower: max-1 to max+1, upper: min
+    // lower: max-1 to max+1, upper: min
+    @Test
+    public void abbrevateTestMaximumWithLowest(){
+
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE-1, 0, "" ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, 0, ""));
         assertEquals("...We are indeed close.", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, 0, "...We are indeed close."));
+    }
 
-        // lower: max-1 to max+1, upper: typical
+    // lower: max-1 to max+1, upper: typical
+    @Test
+    public void abbrevateTestHighestWithTypical(){
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE-1, 20, "" ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, 20, ""));
         assertEquals("One...We are indeed close.", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, 20, "...We are indeed close."));
+    }
 
-        // lower: max-1 to max+1, upper: max-1
+    // lower: max-1 to max+1, upper: max-1
+    @Test
+    public void abbrevateTest2ndHighestBounds(){
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE-1, Integer.MAX_VALUE-1, "" ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, Integer.MAX_VALUE-1, ""));
         assertEquals("One...We are indeed close.", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, Integer.MAX_VALUE-1, "...We are indeed close."));
+    }
 
-        // lower: max-1 to max+1, upper: max
+    // lower: max-1 to max+1, upper: max
+    @Test
+    public void abbrevateTestHighestBounds(){
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE-1, Integer.MAX_VALUE, "" ));
         assertEquals("One day work will end, play is forever! One day play will end, work is forever!",WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, Integer.MAX_VALUE, ""));
         assertEquals("One...We are indeed close.", WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, Integer.MAX_VALUE, "...We are indeed close."));
+    }
 
-        // lower: max-1 to max+1, upper: max+1
+    // lower: max-1 to max+1, upper: max+1
+    @Test
+    public void abbreviateTestHighestExtremeBounds(){
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE-1, Integer.MAX_VALUE+1, "" ));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, Integer.MAX_VALUE+1, ""));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, Integer.MAX_VALUE+1, "...We are indeed close."));
-
-
     }
 
 
-    
+
 
 
 
