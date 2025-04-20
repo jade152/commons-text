@@ -44,7 +44,8 @@ public class myWordsUtilsTests {
     private static String sentenceForAbreviation;
 
     private static String[] setencesForContainsAllWords;
-    private static String[] wordsToFind;
+    private static String[] sentencesForSwapCase;
+    private static String accentedVowels;
 
     @BeforeAll
     public static void setUp(){
@@ -58,6 +59,8 @@ public class myWordsUtilsTests {
         expectedVoweledSentences = new String[]{"!the @quick #brown $fox %jumps ^over &the *laZy (dog", "!the @quick #brown $fox %jumps ^oveR &the *lazy (dog", "!the @quiCk #brown $fox %jumps ^over &the *lazy (dog", "!the @quick #broWn $foX %jumps ^oVer &the *lazy (doG", "!the @quIck #brown $fox %juMps ^over &the *lazy (dog"};
         sentenceForAbreviation = "One day work will end, play is forever! One day play will end, work is forever!";
         setencesForContainsAllWords = new String[] {"\"\"", "\"Writing\" tests to ensure code is working properly", "Writing tests to ensure code is \\working\\ properly", "\'", "Writing tests to ensure code is working properly", "03 1985", "!@# $%^ ^&*"};
+        sentencesForSwapCase = new String[] {"\bWriting\btests\bto\bensure\bcode\bis\bworking\bproperly", "Writing tests to ensure code is working properly", "20 09 1555"};
+        accentedVowels = "·ÈÌÛ˙";
 
     }
 
@@ -249,6 +252,33 @@ public class myWordsUtilsTests {
         assertEquals(false, WordUtils.containsAllWords(setencesForContainsAllWords[6], "!@#", "$%^", "^&*"));
 
     }
+
+    @Test
+    public void swapCaseTestSymbols(){
+        assertEquals(delimiters, WordUtils.swapCase(delimiters));
+    }
+
+    @Test
+    public void swapCaseTestEscapeSequencesInSentence(){
+        assertEquals("\bwRITING\bTESTS\bTO\bENSURE\bCODE\bIS\bWORKING\bPROPERLY", WordUtils.swapCase(sentencesForSwapCase[0]));
+    }
+
+    @Test
+    public void swapCaseTestTypical(){
+        assertEquals("wRITING TESTS TO ENSURE CODE IS WORKING PROPERLY", WordUtils.swapCase(sentencesForSwapCase[1]));
+    }
+
+    @Test
+    public void swapCaseTestNumbers(){
+        assertEquals(sentencesForSwapCase[2], WordUtils.swapCase(sentencesForSwapCase[2]));
+    }
+
+    @Test
+    public void swapCaseTestAccentedVowels(){
+        assertEquals("¡…Õ”⁄", WordUtils.swapCase(accentedVowels));
+    }
+
+
 
 
 
