@@ -43,6 +43,9 @@ public class myWordsUtilsTests {
 
     private static String sentenceForAbreviation;
 
+    private static String[] setencesForContainsAllWords;
+    private static String[] wordsToFind;
+
     @BeforeAll
     public static void setUp(){
         typicalSentence = "The quick brown fox jumps over the lazy dog";
@@ -54,6 +57,8 @@ public class myWordsUtilsTests {
         expectedDelimitedSentences = new String[]{"!The @quick #brown $fox %jumps ^over &the *lazy (dog", "!the @Quick #brown $fox %jumps ^over &the *lazy (dog", "!the @quick #Brown $fox %jumps ^over &the *lazy (dog", "!the @quick #brown $Fox %jumps ^over &the *lazy (dog", "!the @quick #brown $fox %Jumps ^over &the *lazy (dog", "!the @quick #brown $fox %jumps ^Over &the *lazy (dog", "!the @quick #brown $fox %jumps ^over &The *lazy (dog", "!the @quick #brown $fox %jumps ^over &the *Lazy (dog", "!the @quick #brown $fox %jumps ^over &the *lazy (Dog"};
         expectedVoweledSentences = new String[]{"!the @quick #brown $fox %jumps ^over &the *laZy (dog", "!the @quick #brown $fox %jumps ^oveR &the *lazy (dog", "!the @quiCk #brown $fox %jumps ^over &the *lazy (dog", "!the @quick #broWn $foX %jumps ^oVer &the *lazy (doG", "!the @quIck #brown $fox %juMps ^over &the *lazy (dog"};
         sentenceForAbreviation = "One day work will end, play is forever! One day play will end, work is forever!";
+        setencesForContainsAllWords = new String[] {"\"\"", "\"Writing\" tests to ensure code is working properly", "Writing tests to ensure code is \\working\\ properly", "\'", "Writing tests to ensure code is working properly", "03 1985", "!@# $%^ ^&*"};
+
     }
 
     //partiton testing
@@ -204,6 +209,51 @@ public class myWordsUtilsTests {
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE, Integer.MAX_VALUE+1, ""));
         assertThrows(IllegalArgumentException.class, () -> WordUtils.abbreviate(sentenceForAbreviation, Integer.MAX_VALUE+1, Integer.MAX_VALUE+1, "...We are indeed close."));
     }
+
+
+    //partiton testing
+    @Test
+    public void containsAllWordsTestQuoteEscape(){
+        assertEquals(false, WordUtils.containsAllWords(setencesForContainsAllWords[0], "\"","\""));
+    }
+
+    @Test
+    public void containsAllWordsTestSentenceAndQuotes(){
+        assertEquals(false, WordUtils.containsAllWords(setencesForContainsAllWords[1], "\"Writing\"", "tests", "to", "ensure", "code", "is", "working", "lazy", "properly"));
+    }
+
+    @Test
+    public void containsAllWordsTestNotScaningAll(){
+        assertEquals(false, WordUtils.containsAllWords(setencesForContainsAllWords[2], "tests", "code", "\\working\\"));
+
+    }
+
+    @Test
+    public void containsAllWordsTestEscapeApostrophe(){
+        assertEquals(false, WordUtils.containsAllWords(setencesForContainsAllWords[3], "\'"));
+    }
+
+    @Test
+    public void containsAllWordsTypical(){
+        assertEquals(true, WordUtils.containsAllWords(setencesForContainsAllWords[4], "Writing", "tests", "to", "ensure", "code", "is", "working", "properly"));
+    }
+
+    @Test
+    public void containsAllWordsNumbers(){
+        assertEquals(true, WordUtils.containsAllWords(setencesForContainsAllWords[5], "03", "1985"));
+
+    }
+
+    @Test
+    public void containsAllWordsSymbols(){
+        assertEquals(false, WordUtils.containsAllWords(setencesForContainsAllWords[6], "!@#", "$%^", "^&*"));
+
+    }
+
+
+
+
+
 
 
 
