@@ -47,6 +47,8 @@ public class myWordsUtilsTests {
     private static String[] sentencesForSwapCase;
     private static String accentedVowels;
 
+    private static String[] sentencesForInitals;
+
     @BeforeAll
     public static void setUp(){
         typicalSentence = "The quick brown fox jumps over the lazy dog";
@@ -61,6 +63,7 @@ public class myWordsUtilsTests {
         setencesForContainsAllWords = new String[] {"\"\"", "\"Writing\" tests to ensure code is working properly", "Writing tests to ensure code is \\working\\ properly", "\'", "Writing tests to ensure code is working properly", "03 1985", "!@# $%^ ^&*"};
         sentencesForSwapCase = new String[] {"\bWriting\btests\bto\bensure\bcode\bis\bworking\bproperly", "Writing tests to ensure code is working properly", "20 09 1555"};
         accentedVowels = "·ÈÌÛ˙";
+        sentencesForInitals = new String[]{"\b\n\t","\b \n \t", "&^%", "& ^ %", "[|]", "[ | ]", "\b[\n|\t]", "I'm gonna go grab some coffee.", "03 03 2023"};
 
     }
 
@@ -277,6 +280,33 @@ public class myWordsUtilsTests {
     public void swapCaseTestAccentedVowels(){
         assertEquals("¡…Õ”⁄", WordUtils.swapCase(accentedVowels));
     }
+
+    @Test
+    public void initalsTestEscapeCharacters(){ assertEquals("\b", WordUtils.initials(sentencesForInitals[0])); }
+
+    @Test
+    public void initalsTestEscapeCharactersSpaces(){ assertEquals("\b", WordUtils.initials(sentencesForInitals[1])); }
+
+    @Test
+    public void initalsTestSymbols(){ assertEquals("&", WordUtils.initials(sentencesForInitals[2])); }
+
+    @Test
+    public void initalsTestSymbolsSpaces(){ assertEquals("&^%", WordUtils.initials(sentencesForInitals[3])); }
+
+    @Test
+    public void initalsTestBracketLine(){ assertEquals("[", WordUtils.initials(sentencesForInitals[4])); }
+
+    @Test
+    public void initalsTestBracketLineSpaces(){ assertEquals("[|]", WordUtils.initials(sentencesForInitals[5])); }
+
+    @Test
+    public void initalsTestCombinationOfLastThree(){ assertEquals("\b|]", WordUtils.initials(sentencesForInitals[6])); }
+
+    @Test
+    public void initalsTestTypical(){ assertEquals("Igggsc", WordUtils.initials(sentencesForInitals[7])); }
+
+    @Test
+    public void initalsTestNumbers(){ assertEquals("002", WordUtils.initials(sentencesForInitals[8])); }
 
 
 
